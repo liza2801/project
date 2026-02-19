@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор математических заданий - 6 класс</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .math-icon {
+            color: #3498db;
+            margin-right: 15px;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .control-panel {
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tasks-panel {
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            font-size: 1.8rem;
+        }
+        
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 576px) {
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .topic-btn {
+            padding: 15px;
+            background-color: #ecf0f1;
+            border: none;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .topic-btn:hover {
+            background-color: #3498db;
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .topic-btn.active {
+            background-color: #3498db;
+            color: white;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .topic-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .controls {
+            margin-bottom: 30px;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .slider-value {
+            margin-left: 15px;
+            font-weight: bold;
+            color: #3498db;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: #dfe6e9;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .generate-btn {
+            width: 100%;
+            padding: 18px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .generate-btn:hover {
+            background-color: #27ae60;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.3);
+        }
+        
+        .generate-btn i {
+            margin-right: 10px;
+        }
+        
+        .task-list {
+            margin-bottom: 30px;
+        }
+        
+        .task-item {
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .task-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .task-number {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .task-text {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .answer-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+        
+        .answer-toggle {
+            background-color: #ecf0f1;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #2c3e50;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .answer-toggle:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .answer-content {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f1f8e9;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .answer-content.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .answer-text {
+            font-weight: 600;
+            color: #2e7d32;
+            font-size: 1.1rem;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .action-btn {
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+        
+        .print-btn {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .print-btn:hover {
+            background-color: #d68910;
+            transform: translateY(-3px);
+        }
+        
+        .clear-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .clear-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+        }
+        
+        .instructions {
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+        }
+        
+        .instructions-list {
+            padding-left: 20px;
+            margin-top: 15px;
+        }
+        
+        .instructions-list li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        footer {
+            text-align: center;
+            color: #7f8c8d;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .katex-formula {
+            font-size: 1.2rem;
+        }
+        
+        .complexity-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .complexity-easy {
+            background-color: #d5f4e6;
+            color: #27ae60;
+        }
+        
+        .complexity-medium {
+            background-color: #fff3cd;
+            color: #f39c12;
+        }
+        
+        .complexity-hard {
+            background-color: #f8d7da;
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator math-icon"></i>Генератор математических заданий</h1>
+            <p class="subtitle">Для учащихся 6 класса. Выбирайте тему, настраивайте сложность и количество заданий, затем генерируйте уникальные задачи с ответами.</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="control-panel">
+                <h2 class="section-title"><i class="fas fa-sliders-h"></i> Настройки заданий</h2>
+                
+                <div class="topics-grid">
+                    <button class="topic-btn active" data-topic="fractions">
+                        <i class="fas fa-divide topic-icon"></i> Обыкновенные дроби
+                    </button>
+                    <button class="topic-btn" data-topic="decimals">
+                        <i class="fas fa-decimal-point topic-icon"></i> Десятичные дроби
+                    </button>
+                    <button class="topic-btn" data-topic="percentages">
+                        <i class="fas fa-percentage topic-icon"></i> Проценты
+                    </button>
+                    <button class="topic-btn" data-topic="integers">
+                        <i class="fas fa-plus-minus topic-icon"></i> Целые числа
+                    </button>
+                    <button class="topic-btn" data-topic="equations">
+                        <i class="fas fa-equals topic-icon"></i> Уравнения
+                    </button>
+                    <button class="topic-btn" data-topic="geometry">
+                        <i class="fas fa-shapes topic-icon"></i> Геометрия
+                    </button>
+                    <button class="topic-btn" data-topic="ratios">
+                        <i class="fas fa-balance-scale topic-icon"></i> Отношения и пропорции
+                    </button>
+                    <button class="topic-btn" data-topic="mixed">
+                        <i class="fas fa-random topic-icon"></i> Смешанные задачи
+                    </button>
+                </div>
+                
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="taskCount">Количество заданий: <span id="countValue">5</span></label>
+                        <div class="slider-container">
+                            <input type="range" id="taskCount" min="1" max="20" value="5">
+                            <div class="slider-value" id="countDisplay">5</div>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="difficulty">Сложность заданий:</label>
+                        <div class="slider-container">
+                            <input type="range" id="difficulty" min="1" max="3" value="2">
+                            <div class="slider-value" id="difficultyDisplay">Средняя</div>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="taskType">Тип заданий:</label>
+                        <div class="slider-container">
+                            <input type="range" id="taskType" min="1" max="3" value="2">
+                            <div class="slider-value" id="typeDisplay">С примерами</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="generate-btn" id="generateBtn">
+                    <i class="fas fa-bolt"></i> Сгенерировать задания
+                </button>
+            </div>
+            
+            <div class="tasks-panel">
+                <h2 class="section-title"><i class="fas fa-tasks"></i> Сгенерированные задания</h2>
+                
+                <div id="tasksContainer">
+                    <div class="no-tasks">
+                        <p style="text-align: center; color: #7f8c8d; font-size: 1.2rem; padding: 40px;">
+                            Задания еще не сгенерированы. Выберите тему и нажмите "Сгенерировать задания".
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="actions">
+                    <button class="action-btn print-btn" id="printBtn">
+                        <i class="fas fa-print"></i> Распечатать
+                    </button>
+                    <button class="action-btn clear-btn" id="clearBtn">
+                        <i class="fas fa-trash-alt"></i> Очистить
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h2 class="section-title"><i class="fas fa-info-circle"></i> Как использовать генератор</h2>
+            <ol class="instructions-list">
+                <li>Выберите тему математических заданий из предложенных вариантов.</li>
+                <li>Настройте количество заданий с помощью ползунка (от 1 до 20).</li>
+                <li>Выберите уровень сложности: легкий, средний или сложный.</li>
+                <li>Выберите тип заданий: текстовые задачи, числовые примеры или смешанные.</li>
+                <li>Нажмите кнопку "Сгенерировать задания" для создания уникальных задач.</li>
+                <li>Для просмотра ответов нажмите на кнопку "Показать ответ" под каждым заданием.</li>
+                <li>Вы можете распечатать задания или очистить список для создания новых.</li>
+            </ol>
+        </div>
+        
+        <footer>
+            <p>Генератор математических заданий для 6 класса &copy; 2023</p>
+            <p>Используется для подготовки к урокам и самостоятельной практике</p>
+        </footer>
+    </div>
+
+    <!-- Библиотека KaTeX для отображения математических формул -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    
+    <script>
+        // Текущие настройки
+        let currentTopic = 'fractions';
+        let taskCount = 5;
+        let difficulty = 2; // 1-легкая, 2-средняя, 3-сложная
+        let taskType = 2; // 1-текстовые, 2-примеры, 3-смешанные
+        
+        // Элементы DOM
+        const topicButtons = document.querySelectorAll('.topic-btn');
+        const taskCountSlider = document.getElementById('taskCount');
+        const countValue = document.getElementById('countValue');
+        const countDisplay = document.getElementById('countDisplay');
+        const difficultySlider = document.getElementById('difficulty');
+        const difficultyDisplay = document.getElementById('difficultyDisplay');
+        const taskTypeSlider = document.getElementById('taskType');
+        const typeDisplay = document.getElementById('typeDisplay');
+        const generateBtn = document.getElementById('generateBtn');
+        const tasksContainer = document.getElementById('tasksContainer');
+        const printBtn = document.getElementById('printBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        
+        // Инициализация значений
+        updateSliders();
+        
+        // Обработчики событий
+        topicButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                topicButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentTopic = this.getAttribute('data-topic');
+            });
+        });
+        
+        taskCountSlider.addEventListener('input', function() {
+            taskCount = parseInt(this.value);
+            countValue.textContent = taskCount;
+            countDisplay.textContent = taskCount;
+        });
+        
+        difficultySlider.addEventListener('input', function() {
+            difficulty = parseInt(this.value);
+            const difficultyText = ['Легкая', 'Средняя', 'Сложная'];
+            difficultyDisplay.textContent = difficultyText[difficulty-1];
+        });
+        
+        taskTypeSlider.addEventListener('input', function() {
+            taskType = parseInt(this.value);
+            const typeText = ['Текстовые', 'С примерами', 'Смешанные'];
+            typeDisplay.textContent = typeText[taskType-1];
+        });
+        
+        generateBtn.addEventListener('click', generateTasks);
+        printBtn.addEventListener('click', printTasks);
+        clearBtn.addEventListener('click', clearTasks);
+        
+        // Функция генерации заданий
+        function generateTasks() {
+            // Очищаем контейнер
+            tasksContainer.innerHTML = '';
+            
+            // Генерируем задания в зависимости от темы
+            for (let i = 1; i <= taskCount; i++) {
+                let task = {};
+                
+                switch(currentTopic) {
+                    case 'fractions':
+                        task = generateFractionTask(i);
+                        break;
+                    case 'decimals':
+                        task = generateDecimalTask(i);
+                        break;
+                    case 'percentages':
+                        task = generatePercentageTask(i);
+                        break;
+                    case 'integers':
+                        task = generateIntegerTask(i);
+                        break;
+                    case 'equations':
+                        task = generateEquationTask(i);
+                        break;
+                    case 'geometry':
+                        task = generateGeometryTask(i);
+                        break;
+                    case 'ratios':
+                        task = generateRatioTask(i);
+                        break;
+                    case 'mixed':
+                        task = generateMixedTask(i);
+                        break;
+                }
+                
+                // Создаем элемент задания
+                const taskElement = document.createElement('div');
+                taskElement.className = 'task-item';
+                taskElement.innerHTML = `
+                    <div class="task-number">Задание ${i} <span class="complexity-badge complexity-${task.complexity}">${getComplexityText(task.complexity)}</span></div>
+                    <div class="task-text">${task.question}</div>
+                    <div class="answer-section">
+                        <button class="answer-toggle" onclick="toggleAnswer(this)">
+                            <i class="fas fa-eye"></i> Показать ответ
+                        </button>
+                        <div class="answer-content">
+                            <div class="answer-text">${task.answer}</div>
+                            ${task.solution ? `<div style="margin-top: 10px; font-style: italic;">${task.solution}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+                
+                tasksContainer.appendChild(taskElement);
+            }
+            
+            // Рендерим математические формулы с помощью KaTeX
+            renderMathInElement(tasksContainer, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
+        }
+        
+        // Функция для переключения отображения ответа
+        function toggleAnswer(button) {
+            const answerContent = button.nextElementSibling;
+            const isVisible = answerContent.classList.contains('show');
+            
+            if (isVisible) {
+                answerContent.classList.remove('show');
+                button.innerHTML = '<i class="fas fa-eye"></i> Показать ответ';
+            } else {
+                answerContent.classList.add('show');
+                button.innerHTML = '<i class="fas fa-eye-slash"></i> Скрыть ответ';
+            }
+        }
+        
+        // Функция для печати заданий
+        function printTasks() {
+            const printContent = tasksContainer.innerHTML;
+            if (!printContent || printContent.includes('no-tasks')) {
+                alert('Сначала сгенерируйте задания для печати!');
+                return;
+            }
+            
+            const originalContent = document.body.innerHTML;
+            const printWindow = window.open('', '', 'height=800,width=1000');
+            
+            printWindow.document.write('<html><head><title>Математические задания - 6 класс</title>');
+            printWindow.document.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">');
+            printWindow.document.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">');
+            printWindow.document.write('<style>');
+            printWindow.document.write('body { font-family: Arial, sans-serif; padding: 20px; }');
+            printWindow.document.write('.task-item { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; page-break-inside: avoid; }');
+            printWindow.document.write('.task-number { font-weight: bold; margin-bottom: 10px; }');
+            printWindow.document.write('.answer-content { display: block !important; }');
+            printWindow.document.write('.answer-section { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ddd; }');
+            printWindow.document.write('@media print { .answer-toggle { display: none; } }');
+            printWindow.document.write('</style></head><body>');
+            printWindow.document.write('<h1>Математические задания для 6 класса</h1>');
+            printWindow.document.write('<p><strong>Тема:</strong> ' + document.querySelector('.topic-btn.active').textContent.trim() + '</p>');
+            printWindow.document.write('<p><strong>Количество заданий:</strong> ' + taskCount + '</p>');
+            printWindow.document.write('<p><strong>Сложность:</strong> ' + difficultyDisplay.textContent + '</p><hr>');
+            printWindow.document.write(printContent);
+            printWindow.document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"><\/script>');
+            printWindow.document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"><\/script>');
+            printWindow.document.write('<script>renderMathInElement(document.body);<\/script>');
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        }
+        
+        // Функция очистки заданий
+        function clearTasks() {
+            if (confirm('Вы уверены, что хотите удалить все задания?')) {
+                tasksContainer.innerHTML = `
+                    <div class="no-tasks">
+                        <p style="text-align: center; color: #7f8c8d; font-size: 1.2rem; padding: 40px;">
+                            Задания еще не сгенерированы. Выберите тему и нажмите "Сгенерировать задания".
+                        </p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Функции для генерации заданий по темам
+        
+        function generateFractionTask(index) {
+            const complexityLevel = difficulty;
+            const operations = ['+', '-', '×', '÷'];
+            let question, answer, solution;
+            
+            if (taskType === 1 || (taskType === 3 && Math.random() > 0.5)) {
+                // Текстовая задача
+                const subjects = ['учеников', 'яблок', 'книг', 'конфет', 'страниц'];
+                const subject = subjects[Math.floor(Math.random() * subjects.length)];
+                
+                const whole = Math.floor(Math.random() * 5) + 1;
+                const num1 = Math.floor(Math.random() * 8) + 1;
+                const den1 = Math.floor(Math.random() * 8) + num1 + 1;
+                const num2 = Math.floor(Math.random() * 8) + 1;
+                const den2 = Math.floor(Math.random() * 8) + num2 + 1;
+                
+                if (complexityLevel === 1) {
+                    question = `В классе ${whole} ${subject}. ${num1}/${den1} из них — девочки. Сколько девочек в классе?`;
+                    answer = `${whole * num1}/${den1} = ${(whole * num1/den1).toFixed(2)}`;
+                    solution = `Решение: ${whole} × ${num1}/${den1} = ${whole * num1}/${den1} = ${(whole * num1/den1).toFixed(2)}`;
+                } else if (complexityLevel === 2) {
+                    question = `У Маши было ${whole} ${subject}. Она отдала ${num1}/${den1} от всех ${subject} подруге. Сколько ${subject} осталось у Маши?`;
+                    answer = `${whole} - ${whole * num1}/${den1} = ${(whole - whole * num1/den1).toFixed(2)}`;
+                    solution = `Решение: 1) ${whole} × ${num1}/${den1} = ${whole * num1}/${den1} (отдала)<br>2) ${whole} - ${whole * num1}/${den1} = ${(whole - whole * num1/den1).toFixed(2)} (осталось)`;
+                } else {
+                    const num3 = Math.floor(Math.random() * 8) + 1;
+                    const den3 = Math.floor(Math.random() * 8) + num3 + 1;
+                    question = `В саду росло ${whole} деревьев. ${num1}/${den1} из них - яблони, ${num2}/${den2} - груши, остальные - вишни. Сколько вишен растет в саду?`;
+                    const apples = whole * num1/den1;
+                    const pears = whole * num2/den2;
+                    const cherries = whole - apples - pears;
+                    answer = `${whole} - ${whole * num1}/${den1} - ${whole * num2}/${den2} = ${cherries.toFixed(2)}`;
+                    solution = `Решение: 1) Яблони: ${whole} × ${num1}/${den1} = ${apples.toFixed(2)}<br>2) Груши: ${whole} × ${num2}/${den2} = ${pears.toFixed(2)}<br>3) Вишни: ${whole} - ${apples.toFixed(2)} - ${pears.toFixed(2)} = ${cherries.toFixed(2)}`;
+                }
+            } else {
+                // Примеры с дробями
+                const op = operations[Math.floor(Math.random() * operations.length)];
+                let num1, den1, num2, den2;
+                
+                if (complexityLevel === 1) {
+                    num1 = Math.floor(Math.random() * 5) + 1;
+                    den1 = Math.floor(Math.random() * 5) + num1 + 1;
+                    num2 = Math.floor(Math.random() * 5) + 1;
+                    den2 = Math.floor(Math.random() * 5) + num2 + 1;
+                } else if (complexityLevel === 2) {
+                    num1 = Math.floor(Math.random() * 8) + 1;
+                    den1 = Math.floor(Math.random() * 8) + num1 + 1;
+                    num2 = Math.floor(Math.random() * 8) + 1;
+                    den2 = Math.floor(Math.random() * 8) + num2 + 1;
+                } else {
+                    num1 = Math.floor(Math.random() * 12) + 1;
+                    den1 = Math.floor(Math.random() * 12) + num1 + 1;
+                    num2 = Math.floor(Math.random() * 12) + 1;
+                    den2 = Math.floor(Math.random() * 12) + num2 + 1;
+                }
+                
+                question = `Вычислите: $\\frac{${num1}}{${den1}} ${op} \\frac{${num2}}{${den2}}$`;
+                
+                let result;
+                if (op === '+') {
+                    const commonDen = den1 * den2;
+                    const newNum1 = num1 * den2;
+                    const newNum2 = num2 * den1;
+                    result = `${newNum1 + newNum2}/${commonDen}`;
+                    solution = `Решение: НОК(${den1}, ${den2}) = ${commonDen}<br>${num1}/${den1} = ${newNum1}/${commonDen}<br>${num2}/${den2} = ${newNum2}/${commonDen}<br>${newNum1}/${commonDen} + ${newNum2}/${commonDen} = ${newNum1 + newNum2}/${commonDen}`;
+                } else if (op === '-') {
+                    const commonDen = den1 * den2;
+                    const newNum1 = num1 * den2;
+                    const newNum2 = num2 * den1;
+                    result = `${newNum1 - newNum2}/${commonDen}`;
+                    solution = `Решение: НОК(${den1}, ${den2}) = ${commonDen}<br>${num1}/${den1} = ${newNum1}/${commonDen}<br>${num2}/${den2} = ${newNum2}/${commonDen}<br>${newNum1}/${commonDen} - ${newNum2}/${commonDen} = ${newNum1 - newNum2}/${commonDen}`;
+                } else if (op === '×') {
+                    result = `${num1 * num2}/${den1 * den2}`;
+                    solution = `Решение: ${num1}/${den1} × ${num2}/${den2} = ${num1 * num2}/${den1 * den2}`;
+                } else {
+                    result = `${num1 * den2}/${den1 * num2}`;
+                    solution = `Решение: ${num1}/${den1} ÷ ${num2}/${den2} = ${num1}/${den1} × ${den2}/${num2} = ${num1 * den2}/${den1 * num2}`;
+                }
+                
+                answer = result;
+            }
+            
+            return {
+                question: question,
+                answer: answer,
+                solution: solution,
+                complexity: getComplexityClass(complexityLevel)
+            };
+        }
+        
+        function generateDecimalTask(index) {
+            const complexityLevel = difficulty;
+            const operations = ['+', '-', '×', '÷'];
+            let question, answer, solution;
+            
+            if (taskType === 1 || (taskType === 3 && Math.random() > 0.5)) {
+                // Текстовая задача
+                const items = ['кг конфет', 'литров сока', 'метров ткани', 'кг муки', 'литров бензина'];
+                const item = items[Math.floor(Math.random() * items.length)];
+                
+                const price = (Math.random() * 100 + 10).toFixed(2);
+                const quantity = (Math.random() * 5 + 1).toFixed(1);
+                
+                if (complexityLevel === 1) {
+                    question = `1 ${item} стоит ${price} руб. Сколько стоит ${quantity} ${item}?`;
+                    answer = `${(price * quantity).toFixed(2)} руб.`;
+                    solution = `Решение: ${price} × ${quantity} = ${(price * quantity).toFixed(2)} руб.`;
+                } else if (complexityLevel === 2) {
+                    const money = (price * quantity + Math.random() * 50).toFixed(2);
+                    question = `1 ${item} стоит ${price} руб. У покупателя есть ${money} руб. Сколько ${item} он может купить? Сколько сдачи он получит?`;
+                    const maxQuantity = Math.floor(money / price);
+                    const change = (money - maxQuantity * price).toFixed(2);
+                    answer = `${maxQuantity} ${item}, сдача: ${change} руб.`;
+                    solution = `Решение: 1) ${money} ÷ ${price} ≈ ${(money/price).toFixed(2)} (можно купить ${maxQuantity} целых ${item})<br>2) ${money} - ${maxQuantity} × ${price} = ${change} руб. (сдача)`;
+                } else {
+                    const price2 = (Math.random() * 150 + 20).toFixed(2);
+                    const quantity2 = (Math.random() * 3 + 1).toFixed(1);
+                    question = `1 ${item} стоит ${price} руб., а 1 кг другого товара стоит ${price2} руб. Покупатель купил ${quantity} ${item} и ${quantity2} кг другого товара. Сколько он заплатил?`;
+                    const total = (price * quantity + price2 * quantity2).toFixed(2);
+                    answer = `${total} руб.`;
+                    solution = `Решение: 1) ${price} × ${quantity} = ${(price * quantity).toFixed(2)} руб. (первый товар)<br>2) ${price2} × ${quantity2} = ${(price2 * quantity2).toFixed(2)} руб. (второй товар)<br>3) ${(price * quantity).toFixed(2)} + ${(price2 * quantity2).toFixed(2)} = ${total} руб. (всего)`;
+                }
+            } else {
+                // Примеры с десятичными дробями
+                const op = operations[Math.floor(Math.random() * operations.length)];
+                let num1, num2;
+                
+                if (complexityLevel === 1) {
+                    num1 = (Math.random() * 10 + 1).toFixed(1);
+                    num2 = (Math.random() * 10 + 1).toFixed(1);
+                } else if (complexityLevel === 2) {
+                    num1 = (Math.random() * 100 + 1).toFixed(2);
+                    num2 = (Math.random() * 10 + 1).toFixed(2);
+                } else {
+                    num1 = (Math.random() * 1000 + 1).toFixed(3);
+                    num2 = (Math.random() * 100 + 1).toFixed(2);
+                }
+                
+                num1 = parseFloat(num1);
+                num2 = parseFloat(num2);
+                
+                question = `Вычислите: ${num1} ${op} ${num2}`;
+                
+                let result;
+                if (op === '+') {
+                    result = (num1 + num2).toFixed(Math.max(num1.toString().split('.')[1]?.length || 0, num2.toString().split('.')[1]?.length || 0));
+                    solution = `Решение: ${num1} + ${num2} = ${result}`;
+                } else if (op === '-') {
+                    result = (num1 - num2).toFixed(Math.max(num1.toString().split('.')[1]?.length || 0, num2.toString().split('.')[1]?.length || 0));
+                    solution = `Решение: ${num1} - ${num2} = ${result}`;
+                } else if (op === '×') {
+                    result = (num1 * num2).toFixed(2);
+                    solution = `Решение: ${num1} × ${num2} = ${result}`;
+                } else {
+                    result = (num1 / num2).toFixed(2);
+                    solution = `Решение: ${num1} ÷ ${num2} = ${result}`;
+                }
+                
+                answer = result;
+            }
+            
+            return {
+                question: question,
+                answer: answer,
+                solution: solution,
+                complexity: getComplexityClass(complexityLevel)
+            };
+        }
+        
+        function generatePercentageTask(index) {
+            const complexityLevel = difficulty;
+            let question, answer, solution;
+            
+            const items = ['товар', 'зарплата', 'цена', 'население', 'баллы'];
+            const item = items[Math.floor(Math.random() * items.length)];
+            
+            const baseValue = Math.floor(Math.random() * 500 + 100);
+            const percentage = Math.floor(Math.random() * 50 + 5);
+            
+            if (complexityLevel === 1) {
+                question = `Найдите ${percentage}% от числа ${baseValue}.`;
+                answer = `${baseValue * percentage / 100}`;
+                solution = `Решение: ${baseValue} × ${percentage} ÷ 100 = ${baseValue * percentage / 100}`;
+            } else if (complexityLevel === 2) {
+                const newValue = baseValue + baseValue * percentage / 100;
+                question = `Цена ${item} составляла ${baseValue} руб. Затем она выросла на ${percentage}%. Какова новая цена?`;
+                answer = `${newValue} руб.`;
+                solution = `Решение: 1) ${baseValue} × ${percentage} ÷ 100 = ${baseValue * percentage / 100} руб. (на столько выросла цена)<br>2) ${baseValue} + ${baseValue * percentage / 100} = ${newValue} руб. (новая цена)`;
+            } else {
+                const value1 = baseValue;
+                const value2 = baseValue + Math.floor(Math.random() * 200 + 50);
+                question = `Число ${value1} составляет ${percentage}% от некоторого числа. Найдите это число.`;
+                const originalValue = value1 * 100 / percentage;
+                answer = `${originalValue}`;
+                solution = `Решение: Если ${value1} - это ${percentage}%, то 1% = ${value1} ÷ ${percentage} = ${value1/percentage}<br>100% = ${value1/percentage} × 100 = ${originalValue}`;
+            }
+            
+            return {
+                question: question,
+                answer: answer,
+                solution: solution,
+                complexity: getComplexityClass(complexityLevel)
+            };
+        }
+        
+        // Остальные функции генерации заданий (integer, equation, geometry, ratio, mixed)
+        // Для краткости оставим их реализацию похожей на приведенные выше
+        
+        function generateIntegerTask(index) {
+            const operations = ['+', '-', '×'];
+            const op = operations[Math.floor(Math.random() * operations.length)];
+            let num1, num2;
+            
+            if (difficulty === 1) {
+                num1 = Math.floor(Math.random() * 20) - 10;
+                num2 = Math.floor(Math.random() * 20) - 10;
+            } else if (difficulty === 2) {
+                num1 = Math.floor(Math.random() * 50) - 25;
+                num2 = Math.floor(Math.random() * 50) - 25;
+            } else {
+                num1 = Math.floor(Math.random() * 100) - 50;
+                num2 = Math.floor(Math.random() * 100) - 50;
+            }
+            
+            let question = `Вычислите: ${num1} ${op} ${num2}`;
+            let answer, solution;
+            
+            if (op === '+') {
+                answer = num1 + num2;
+                solution = `Решение: ${num1} + ${num2} = ${answer}`;
+            } else if (op === '-') {
+                answer = num1 - num2;
+                solution = `Решение: ${num1} - ${num2} = ${answer}`;
+            } else {
+                answer = num1 * num2;
+                solution = `Решение: ${num1} × ${num2} = ${answer}`;
+            }
+            
+            return {
+                question: question,
+                answer: answer,
+                solution: solution,
+                complexity: getComplexityClass(difficulty)
+            };
+        }
+        
+        function generateEquationTask(index) {
+            const complexityLevel = difficulty;
+            let question, answer, solution;
+            
+            if (complexityLevel === 1) {
+                const a = Math.floor(Math.random() * 10) + 1;
+                const b = Math.floor(Math.random() * 20) + 1;
+                const x = b - a;
+                question = `Решите уравнение: ${a} + x = ${b}`;
+                answer = `x = ${x}`;
+                solution = `Решение: x = ${b} - ${a} = ${x}`;
+            } else if (complexityLevel === 2) {
+                const a = Math.floor(Math.random() * 10) + 2;
+                const b = Math.floor(Math.random() * 50) + 10;
+                const x = b / a;
+                question = `Решите уравнение: ${a}x = ${b}`;
+                answer = `x = ${x}`;
+                solution = `Решение: x = ${b} ÷ ${a} = ${x}`;
+            } else {
+                const a = Math.floor(Math.random() * 10) + 2;
+                const b = Math.floor(Math.random() * 10) + 2;
+                const c = Math.floor(Math.random() * 50) + 20;
+                const x = (c - b) / a;
+                question = `Решите уравнение: ${a}x + ${b} = ${c}`;
+                answer = `x = ${x}`;
+                solution = `Решение: ${a}x = ${c} - ${b} = ${c - b}<br>x = ${c - b} ÷ ${a} = ${x}`;
+            }
+            
+            return {
+                question: question,
+                answer: answer,
+                solution: solution,
+                complexity: getComplexityClass(complexityLevel)
+            };
+        }
+        
+        function generateGeometryTask(index) {
+            const complexityLevel = difficulty;
+            let question, answer, solution;
+            const shapes = ['прямоугольник', 'квадрат', 'треугольник', 'круг'];
+            const shape = shapes[Math.floor(Math.random() * shapes.length)];
+            
+            if (complexityLevel === 1) {
+                const side = Math.floor(Math.random() * 10) + 5;
+                if (shape === 'квадрат') {
+                    question = `Найдите периметр квадрата со стороной ${side} см.`;
+                    answer = `${side * 4} см`;
+                    solution = `Решение: Периметр квадрата = сторона × 4 = ${side} × 4 = ${side * 4} см`;
+                } else {
+                    question = `Найдите площадь квадрата со стороной ${side} см.`;
+                    answer = `${side * side} см²`;
+                    solution = `Решение: Площадь квадрата = сторона × сторона = ${side} × ${side} = ${side * side} см²`;
+                }
+            } else if (complexityLevel === 2) {
+                const length = Math.floor(Math.random() * 15) + 10;
+                const width = Math.floor(Math.random() * 10) + 5;
+                question = `Найдите площадь прямоугольника со сторонами ${length} см и ${width} см.`;
+                answer = `${length * width} см²`;
+                solution = `Решение: Площадь прямоугольника = длина × ширина = ${length} × ${width} = ${length * width} см²`;
+            } else {
+                const radius = Math.floor(Math.random() * 10) + 5;
+                question = `Найдите длину окружности с радиусом ${radius} см (π ≈ 3.14).`;
+                answer = `${(2 * 3.14 * radius).toFixed(2)} см`;
+                solution = `Решение: Длина окружности = 2πR = 2 × 3.14 × ${radius} = ${(2 * 3.14 * radius).toFixed(2)} см`;
+            }
+            
+            return {
+                question: question,
+                answer: answer,
+                solution: solution,
+                complexity: getComplexityClass(complexityLevel)
+            };
+        }
+        
+        function generateRatioTask(index) {
+            const complexityLevel = difficulty;
+            let question, answer, solution;
+            
+            if (complexityLevel === 1) {
+                const a = Math.floor(Math.random() * 10) + 2;
+                const b = Math.floor(Math.random() * 10) + 2;
+                question = `Упростите отношение: ${a * 2} : ${b * 2}`;
+                answer = `${a} : ${b}`;
+                solution = `Решение: ${a * 2} : ${b * 2} = (${a * 2} ÷ 2) : (${b * 2} ÷ 2) = ${a} : ${b}`;
+            } else if (complexityLevel === 2) {
+                const a = Math.floor(Math.random() * 5) + 2;
+                const b = Math.floor(Math.random() * 5) + 2;
+                const total = (a + b) * Math.floor(Math.random() * 10 + 5);
+                question = `Число ${total} разделите в отношении ${a} : ${b}.`;
+                const part1 = total * a / (a + b);
+                const part2 = total * b / (a + b);
+                answer = `${part1} и ${part2}`;
+                solution = `Решение: 1) ${a} + ${b} = ${a + b} (всего частей)<br>2) ${total} ÷ ${a + b} = ${total/(a+b)} (одна часть)<br>3) ${total/(a+b)} × ${a} = ${part1} (первое число)<br>4) ${total/(a+b)} × ${b} = ${part2} (второе число)`;
+            } else {
+                const a = Math.floor(Math.random() * 5) + 2;
+                const b = Math.floor(Math.random() * 5) + 2;
+                const c = Math.floor(Math.random() * 5) + 2;
+                question = `Разделите число 100 в отношении ${a} : ${b} : ${c}.`;
+                const part1 = 100 * a / (a + b + c);
+                const part2 = 100 * b / (a + b + c);
+                const part3 = 100 * c / (a + b + c);
+                answer = `${part1.toFixed(2)}, ${part2.toFixed(2)} и ${part3.toFixed(2)}`;
+                solution = `Решение: 1) ${a} + ${b} + ${c} = ${a + b + c} (всего частей)<br>2) 100 ÷ ${a + b + c} = ${(100/(a+b+c)).toFixed(2)} (одна часть)<br>3) ${(100/(a+b+c)).toFixed(2)} × ${a} = ${part1.toFixed(2)}<br>4) ${(100/(a+b+c)).toFixed(2)} × ${b} = ${part2.toFixed(2)}<br>5) ${(100/(a+b+c)).toFixed(2)} × ${c} = ${part3.toFixed(2)}`;
+            }
+            
+            return {
+                question: question,
+                answer: answer,
+                solution: solution,
+                complexity: getComplexityClass(complexityLevel)
+            };
+        }
+        
+        function generateMixedTask(index) {
+            // Случайным образом выбираем одну из тем для смешанных задач
+            const topics = ['fractions', 'decimals', 'percentages', 'integers', 'equations', 'geometry', 'ratios'];
+            const randomTopic = topics[Math.floor(Math.random() * topics.length)];
+            
+            switch(randomTopic) {
+                case 'fractions':
+                    return generateFractionTask(index);
+                case 'decimals':
+                    return generateDecimalTask(index);
+                case 'percentages':
+                    return generatePercentageTask(index);
+                case 'integers':
+                    return generateIntegerTask(index);
+                case 'equations':
+                    return generateEquationTask(index);
+                case 'geometry':
+                    return generateGeometryTask(index);
+                case 'ratios':
+                    return generateRatioTask(index);
+                default:
+                    return generateFractionTask(index);
+            }
+        }
+        
+        // Вспомогательные функции
+        function getComplexityClass(level) {
+            return ['easy', 'medium', 'hard'][level-1];
+        }
+        
+        function getComplexityText(className) {
+            const texts = {
+                'easy': 'Легкая',
+                'medium': 'Средняя',
+                'hard': 'Сложная'
+            };
+            return texts[className] || 'Средняя';
+        }
+        
+        function updateSliders() {
+            countValue.textContent = taskCount;
+            countDisplay.textContent = taskCount;
+            
+            const difficultyText = ['Легкая', 'Средняя', 'Сложная'];
+            difficultyDisplay.textContent = difficultyText[difficulty-1];
+            
+            const typeText = ['Текстовые', 'С примерами', 'Смешанные'];
+            typeDisplay.textContent = typeText[taskType-1];
+        }
+        
+        // Генерируем начальные задания при загрузке
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(generateTasks, 500);
+        });
+    </script>
+</body>
+</html>
